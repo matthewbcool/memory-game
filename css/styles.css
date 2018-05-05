@@ -37,6 +37,7 @@ body {
     height: 60px;
     transition: 0.5s ease-out;
     transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 
 .card-back {
@@ -50,6 +51,15 @@ body {
   transform: rotateY(-180deg);
 }
 
+.icon {
+    position: absolute;
+    display: inline-block;
+    font-size: 2.5em;
+    margin: 10px 0 0 6px;
+    backface-visibility: hidden;
+    transform: rotateY(180deg)
+     
+}
 
 
 /* --------------------------------------------------

@@ -2,16 +2,48 @@ const gameBoard = document.getElementById('game-board');
 const playButton = document.getElementById('play-btn');
 
 
+const randomIconSelection = () => {
+    let iconClasses = [
+        'icon fab fa-hooli', 
+        'icon fab fa-pied-piper-hat', 
+        'icon fab fa-pied-piper-alt', 
+        'icon fab fa-js', 
+        'icon fab fa-free-code-camp', 
+        'icon fab fa-steam', 
+        'icon fab fa-hooli', 
+        'icon fab fa-pied-piper-hat', 
+        'icon fab fa-pied-piper-alt', 
+        'icon fab fa-js', 
+        'icon fab fa-free-code-camp', 
+        'icon fab fa-steam'
+    ];
+    let randomIconList = [];
+    //get random number based on iconClasses length
+    const randomIconIndex = () => {
+        return Math.floor(Math.random() * iconClasses.length);
+    }
+    //get a random class name
+    for (let i = 0; i < 12; i++) {
+    let iconIndex = randomIconIndex();
+    let removedClass = iconClasses.splice(iconIndex, 1).join();
+    randomIconList.push(removedClass);
+    }
+    return randomIconList;
+};
 
-const createCards = ()=> {
+
+const createCards = (cardIndex, randomIconList)=> {
+
     const respondToClick = () => {
         cardFront.className = 'card-front reveal-front';
-      }
-
+      } 
     const cardFront = document.createElement('div');
+    const iconHtml = document.createElement('i');
     //create card front
     cardFront.className = 'card-front card';
     gameBoard.appendChild(cardFront);
+    iconHtml.className = randomIconList[cardIndex];
+    cardFront.appendChild(iconHtml);
      //adds listener
     cardFront.addEventListener('click', respondToClick);
 
@@ -20,19 +52,18 @@ const createCards = ()=> {
     cardBack.className = 'card-back card';
     let currentCardFront = cardFront;
 
-    //cardBack is a child of cardFront
+    //the cyan cardBack is a child of cardFront
     currentCardFront.appendChild(cardBack);
 }
 
 
-
-
-
 const createBoard = () => {
-  for (let i = 0; i < 12; i++) {
-    createCards(); 
-  };
-}
+  let randomIconList = randomIconSelection();
+  console.log('The boards current working array is: ' + randomIconList);
+  for (let cardIndex = 0; cardIndex < 12; cardIndex++) {
+    createCards(cardIndex, randomIconList);
+  }
+};
 
 playButton.addEventListener('click', function(){
     //first remove existing cards before setting up new board
