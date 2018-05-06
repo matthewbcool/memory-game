@@ -36,7 +36,7 @@ const randomIconSelection = () => {
 
 const createCards = (cardIndex, randomIconList)=> {
 
-    const respondToClick = () => {
+    const respondToClick = (event) => {
         let equalMatch;
         let notEqualMatch;
         //get the current card user has just clicked
