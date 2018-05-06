@@ -37,6 +37,7 @@ body {
     height: 60px;
     transition: 0.5s ease-out;
     transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 
@@ -45,6 +46,7 @@ body {
     width: 60px;
     height: 60px;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .reveal-front {

@@ -1,5 +1,7 @@
 const gameBoard = document.getElementById('game-board');
 const playButton = document.getElementById('play-btn');
+let otherCard;
+let otherIconElement;
 
 
 const randomIconSelection = () => {
@@ -35,8 +37,49 @@ const randomIconSelection = () => {
 const createCards = (cardIndex, randomIconList)=> {
 
     const respondToClick = () => {
+        let equalMatch;
+        let notEqualMatch;
+        //get the current card user has just clicked
+        let currentCard = event.target.parentNode;
+        //get the icon the user has just revealed 
+        let currentIconElement = event.target;
+        currentIconElement = currentIconElement.previousSibling.className;
+
+        if (otherCard === undefined) {
+            otherCard = currentCard;
+            otherIconElement = currentIconElement;
+        } else {
+            otherIconElement = otherCard.childNodes;
+            otherIconElement = otherIconElement[0];
+            otherIconElement = otherIconElement.className;
+            equalMatch = (otherIconElement === currentIconElement);
+            notEqualMatch = (otherIconElement !== currentIconElement)
+        }
+        
         cardFront.className = 'card-front reveal-front';
-      } 
+        console.log('otherCard= ' + otherCard + 
+        '\n' + 'otherIconElement= ' + otherIconElement +
+         '\n' + 'currentIconElement= ' + currentIconElement + 
+         '\n' + 'currentCard= ' + currentCard.className
+        )
+        if (equalMatch) {
+            currentCard.className = 'card-front reveal-front';
+            otherCard.className = 'card-front reveal-front';
+            otherCard = undefined;
+            currentCard;
+            otherIconElement;
+            currentIconElement;
+        }
+        if (notEqualMatch) {
+            setTimeout(function () {
+            otherCard.className = 'card-front card';
+            currentCard.className = 'card-front card';
+            otherCard = undefined;
+            otherIconElement;
+            currentCard;
+            currentIconElement;}, 1000);
+        }
+    } 
     const cardFront = document.createElement('div');
     const iconHtml = document.createElement('i');
     //create card front
@@ -59,7 +102,7 @@ const createCards = (cardIndex, randomIconList)=> {
 
 const createBoard = () => {
   let randomIconList = randomIconSelection();
-  console.log('The boards current working array is: ' + randomIconList);
+  //console.log('The boards current working array is: ' + randomIconList);
   for (let cardIndex = 0; cardIndex < 12; cardIndex++) {
     createCards(cardIndex, randomIconList);
   }
