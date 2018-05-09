@@ -1,7 +1,10 @@
 const gameBoard = document.getElementById('game-board');
 const playButton = document.getElementById('play-btn');
+const moveCounter = document.getElementById('move-counter');
 let otherCard;
 let otherIconElement;
+let cardsRevealed = 0;
+moveCounter.textContent='0';
 
 
 const randomIconSelection = () => {
@@ -34,50 +37,54 @@ const randomIconSelection = () => {
 };
 
 
+//TODO: Add cards revealed counter to check against revealing more than two cards
+
 const createCards = (cardIndex, randomIconList)=> {
 
     const respondToClick = (event) => {
         let equalMatch;
         let notEqualMatch;
+        gameBoard.removeEventListener('click', function () {
+            console.log('game board event removed');
+        })
+        moveCounter.textContent++;
         //get the current card user has just clicked
         let currentCard = event.target.parentNode;
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
+
         currentIconElement = currentIconElement.previousSibling.className;
 
-        if (otherCard === undefined) {
+        if (otherCard === undefined && cardsRevealed === 0) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
-        } else {
+            cardFront.className = 'card-front reveal-front';
+            cardsRevealed = 1;
+        } else if (cardsRevealed === 1) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
             otherIconElement = otherIconElement.className;
+            cardsRevealed = 2;
             equalMatch = (otherIconElement === currentIconElement);
             notEqualMatch = (otherIconElement !== currentIconElement)
+            cardFront.className = 'card-front reveal-front';
+        } else {
+            console.log('please wait for cards to reset');
         }
-        
-        cardFront.className = 'card-front reveal-front';
-        console.log('otherCard= ' + otherCard + 
-        '\n' + 'otherIconElement= ' + otherIconElement +
-         '\n' + 'currentIconElement= ' + currentIconElement + 
-         '\n' + 'currentCard= ' + currentCard.className
-        )
+
         if (equalMatch) {
             currentCard.className = 'card-front reveal-front';
             otherCard.className = 'card-front reveal-front';
             otherCard = undefined;
-            currentCard;
-            otherIconElement;
-            currentIconElement;
+            cardsRevealed = 0;
         }
         if (notEqualMatch) {
-            setTimeout(function () {
+            cardsRevealed = 0;
+            setTimeout(function () {  
             otherCard.className = 'card-front card';
             currentCard.className = 'card-front card';
             otherCard = undefined;
-            otherIconElement;
-            currentCard;
-            currentIconElement;}, 1000);
+            }, 500);
         }
     } 
     const cardFront = document.createElement('div');
@@ -114,5 +121,6 @@ playButton.addEventListener('click', function(){
     for (wrapperChild of wrapperChildren) {
         wrapperChild.remove();
     }
+    moveCounter.textContent = 0;
     createBoard();
 })
