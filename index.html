@@ -11,18 +11,21 @@
 <body>
     <div class='menu-bar'>
         <button id='play-btn'>Play</button>
-        <span class='timer'>0:00</span>
+        <span id='game-timer' class='timer'>0</span>
     </div>
    <div id='game-board' class='wrapper'>
-
+        <div id='complete-modal' class='game-complete-modal hide'>
+            <i id='close-modal' class='fa fa-times' ></i>
+            
+        </div>
    </div>
     <footer id='game-footer' class='footer'>
         <button>Reset</button>
-        <span id='move-counter'>0</span>
+        <span id='move-counter'></span>
         <div>
-          <i class='fas fa-star'></i>
-          <i class='fas fa-star'></i>
-          <i class='fas fa-star'></i>
+          <i id='one-star' class='fas fa-star'></i>
+          <i id='two-star' class='fas fa-star'></i>
+          <i id='three-star' class='fas fa-star'></i>
         </div>
     </footer>        
 <script src="js/main.js"></script>

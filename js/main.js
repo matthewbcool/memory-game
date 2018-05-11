@@ -1,11 +1,60 @@
 const gameBoard = document.getElementById('game-board');
 const playButton = document.getElementById('play-btn');
 const moveCounter = document.getElementById('move-counter');
+const thirdStar = document.getElementById('three-star');
+const secondStar = document.getElementById('two-star');
+const gameTimer = document.getElementById('game-timer');
+const closeModal = document.getElementById('close-modal');
+const completeModal = document.getElementById('complete-modal');
+let gameOverTime = 0;
 let otherCard;
 let otherIconElement;
 let cardsRevealed = 0;
-moveCounter.textContent='0';
 
+
+const isGameOver = () => {
+    //loop through all cards on the board and check if they are revealed
+    let count = 0;
+    let wrapperChildren = document.querySelectorAll('.card-front');
+    for (wrapperChild of wrapperChildren) {
+        if (wrapperChild.className === 'card-front reveal-front') {
+          count++;
+        } else {
+        }
+    }
+    if (count === 12) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//timer functions
+
+const startTimer = () => timer = self.setInterval(incrementTimer, 1000);
+
+const incrementTimer = () => {
+    gameTimer.textContent++;
+}
+
+const stopTimer = () => {
+    clearInterval(timer);
+    timer = null;
+    gameOverTime = gameTimer.textContent;
+    gameTimer.textContent = 0;
+    console.log(gameOverTime);
+}
+
+
+const hideModal = () =>  {
+    completeModal.className = 'hide';
+}
+
+const showModal = () => {
+    completeModal.className = 'game-complete-modal';
+}
+
+completeModal.addEventListener('click', hideModal);
 
 const randomIconSelection = () => {
     let iconClasses = [
@@ -36,30 +85,34 @@ const randomIconSelection = () => {
     return randomIconList;
 };
 
+const starCheck = () => {
+  if (moveCounter.textContent <= 16) {
 
-//TODO: Add cards revealed counter to check against revealing more than two cards
+  } else if (moveCounter.textContent > 16 && moveCounter.textContent < 30) {
+    thirdStar.className = 'hide';
+    } else {
+        secondStar.className = 'hide';
+    }
+}
+
 
 const createCards = (cardIndex, randomIconList)=> {
 
-    const respondToClick = (event) => {
+    const respondToClick = (event, timer) => {
         let equalMatch;
         let notEqualMatch;
-        gameBoard.removeEventListener('click', function () {
-            console.log('game board event removed');
-        })
-        moveCounter.textContent++;
         //get the current card user has just clicked
         let currentCard = event.target.parentNode;
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
-
         currentIconElement = currentIconElement.previousSibling.className;
-
         if (otherCard === undefined && cardsRevealed === 0) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
             cardFront.className = 'card-front reveal-front';
             cardsRevealed = 1;
+            moveCounter.textContent++;
+            starCheck();
         } else if (cardsRevealed === 1) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
@@ -68,22 +121,31 @@ const createCards = (cardIndex, randomIconList)=> {
             equalMatch = (otherIconElement === currentIconElement);
             notEqualMatch = (otherIconElement !== currentIconElement)
             cardFront.className = 'card-front reveal-front';
+            moveCounter.textContent++;
+            starCheck();
         } else {
-            console.log('please wait for cards to reset');
+            console.log('this is a click with two cards already revealed');
         }
 
-        if (equalMatch) {
+        if (equalMatch && isGameOver()) {
             currentCard.className = 'card-front reveal-front';
             otherCard.className = 'card-front reveal-front';
             otherCard = undefined;
             cardsRevealed = 0;
-        }
-        if (notEqualMatch) {
+            showModal();
+            stopTimer();
+        } else if (equalMatch) {
+            currentCard.className = 'card-front reveal-front';
+            otherCard.className = 'card-front reveal-front';
+            otherCard = undefined;
+            cardsRevealed = 0;
+        } else if (notEqualMatch) {
             cardsRevealed = 0;
             setTimeout(function () {  
             otherCard.className = 'card-front card';
             currentCard.className = 'card-front card';
             otherCard = undefined;
+            gameBoard.className = 'wrapper';
             }, 500);
         }
     } 
@@ -109,18 +171,19 @@ const createCards = (cardIndex, randomIconList)=> {
 
 const createBoard = () => {
   let randomIconList = randomIconSelection();
-  //console.log('The boards current working array is: ' + randomIconList);
   for (let cardIndex = 0; cardIndex < 12; cardIndex++) {
     createCards(cardIndex, randomIconList);
   }
 };
 
 playButton.addEventListener('click', function(){
-    //first remove existing cards before setting up new board
     const wrapperChildren = document.querySelectorAll('.card-front');
     for (wrapperChild of wrapperChildren) {
         wrapperChild.remove();
-    }
+    }    
     moveCounter.textContent = 0;
     createBoard();
+    startTimer();
+    
+
 })
