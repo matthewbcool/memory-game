@@ -115,7 +115,7 @@ const createCards = (cardIndex, randomIconList)=> {
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
         currentIconElement = currentIconElement.previousSibling.className;
-        if (otherCard === undefined && cardsRevealed === 0) {
+        if (otherCard === undefined && cardsRevealed === 0 && event.target.matches('.card')) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
             cardFront.className = 'card-front reveal-front';
