@@ -121,26 +121,29 @@ const createCards = (cardIndex, randomIconList)=> {
         let currentCard = event.target.parentNode;
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
-        currentIconElement = currentIconElement.previousSibling.className;
+            currentIconElement = currentIconElement.previousSibling.className;
         if (otherCard === undefined && cardsRevealed === 0 && event.target.matches('div.card')) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
             cardFront.className = 'card-front reveal-front';
-            cardsRevealed = 1;
+            cardsRevealed++;
             moveCounter.textContent++;
             starCheck();
+            console.log('Cards Revealed: ' + cardsRevealed);
         } else if (cardsRevealed === 1 && event.target.matches('div.card')) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
             otherIconElement = otherIconElement.className;
-            cardsRevealed = 2;
+            cardsRevealed++;
             equalMatch = (otherIconElement === currentIconElement);
             notEqualMatch = (otherIconElement !== currentIconElement)
             cardFront.className = 'card-front reveal-front';
             moveCounter.textContent++;
             starCheck();
+            console.log('Cards Revealed: ' + cardsRevealed);
         } else {
             console.log('this is a click with two cards already revealed');
+            console.log('Cards Revealed: ' + cardsRevealed);
         }
 
         if (equalMatch && isGameOver()) {
@@ -155,13 +158,21 @@ const createCards = (cardIndex, randomIconList)=> {
             currentCard.className = 'card-front reveal-front';
             otherCard.className = 'card-front reveal-front';
             otherCard = undefined;
-            cardsRevealed = 0;
+            currentCard;
+            setTimeout(function(){
+                cardsRevealed = 0;
+            }, 500);
         } else if (notEqualMatch) {
-            cardsRevealed = 0;
-            setTimeout(function () {  
-            otherCard.className = 'card-front card';
-            currentCard.className = 'card-front card';
+            let filpBackOverOne;
+            let filpBackOverTwo;
+            filpBackOverOne = otherCard;
+            filpBackOverTwo = currentCard;
             otherCard = undefined;
+            currentCard;
+            setTimeout(function () {  
+            filpBackOverOne.className = 'card-front card';
+            filpBackOverTwo.className = 'card-front card';
+            cardsRevealed = 0;
             gameBoard.className = 'wrapper';
             }, 500);
         }
