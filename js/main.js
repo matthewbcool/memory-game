@@ -16,6 +16,7 @@ let gameOverTime = 0;
 let otherCard;
 let otherIconElement;
 let cardsRevealed = 0;
+let timer;
 
 
 const isGameOver = () => {
@@ -167,8 +168,8 @@ const createCards = (cardIndex, randomIconList)=> {
     iconHtml.className = randomIconList[cardIndex];
     cardFront.appendChild(iconHtml);
      //adds listener
-    cardFront.addEventListener('click', respondToClick);
 
+    cardFront.addEventListener('click', respondToClick);
     //create card back
     const cardBack = document.createElement('div');
     cardBack.className = 'card-back card';
@@ -192,6 +193,9 @@ const playGame = function(){
         wrapperChild.remove();
     }    
     moveCounter.textContent = 0;
+    if (timer !== undefined) {
+        stopTimer();
+    }
     createBoard();
     startTimer();
 }
