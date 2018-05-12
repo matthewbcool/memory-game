@@ -16,11 +16,20 @@
    <div id='game-board' class='wrapper'>
         <div id='complete-modal' class='game-complete-modal hide'>
             <i id='close-modal' class='fa fa-times' ></i>
-            
+            <div id='game-stats-box' class='game-stats'>
+                <h3>Congratulations!!</h3>
+                <p>Star Rating: </p><span class='star-rating'>
+                    <i id='one-star-modal' class='fas fa-star'></i>
+                    <i id='two-star-modal' class='fas fa-star'></i>
+                    <i id='three-star-modal' class='fas fa-star'></i>
+                </span>
+                <p>Time to Complete:</p><span class='game-over-time'>  seconds</span>
+                <button id='play-again'>Play Again</button>
+            </div>
         </div>
    </div>
     <footer id='game-footer' class='footer'>
-        <button>Reset</button>
+        <button id='reset-btn'>Reset</button>
         <span id='move-counter'></span>
         <div>
           <i id='one-star' class='fas fa-star'></i>

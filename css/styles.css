@@ -1,6 +1,8 @@
 body {
-    width: 90%;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .menu-bar {
@@ -8,7 +10,7 @@ body {
     justify-content: space-between;
     border: solid black 1px;
     width: 307px;
-    margin: 10px 0 10px 0;
+    margin: 10px 12px 10px 0;
     padding: 5px;
 }
   
@@ -17,7 +19,7 @@ body {
     justify-content: space-between;
     border: solid black 1px;
     width: 307px;
-    margin: 10px 0 10px 0;
+    margin: 10px 12px 10px 0;
     padding: 5px;
 }
   
@@ -72,8 +74,16 @@ body {
     height: 220px;
     width: 260px;
     margin: 0 23.5px 0 23.5px;
-    border: solid red 1px;
+    border: solid black 3px;
     background-color: grey;
+    border-radius: 5px;
+    z-index: 100;
+}
+.game-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .fa-times {

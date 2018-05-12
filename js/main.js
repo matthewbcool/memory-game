@@ -1,11 +1,17 @@
 const gameBoard = document.getElementById('game-board');
 const playButton = document.getElementById('play-btn');
+const resetButton = document.getElementById('reset-btn');
 const moveCounter = document.getElementById('move-counter');
 const thirdStar = document.getElementById('three-star');
 const secondStar = document.getElementById('two-star');
+const thirdStarModal = document.getElementById('three-star-modal');
+const secondStarModal = document.getElementById('two-star-modal');
 const gameTimer = document.getElementById('game-timer');
 const closeModal = document.getElementById('close-modal');
 const completeModal = document.getElementById('complete-modal');
+const starRatingSpan = document.querySelector('.star-rating');
+const gameOverTimeSpan = document.querySelector('.game-over-time');
+const playAgainBtn = document.getElementById('play-again');
 let gameOverTime = 0;
 let otherCard;
 let otherIconElement;
@@ -13,7 +19,6 @@ let cardsRevealed = 0;
 
 
 const isGameOver = () => {
-    //loop through all cards on the board and check if they are revealed
     let count = 0;
     let wrapperChildren = document.querySelectorAll('.card-front');
     for (wrapperChild of wrapperChildren) {
@@ -38,13 +43,13 @@ const incrementTimer = () => {
 }
 
 const stopTimer = () => {
+    gameOverTime = gameTimer.textContent;
     clearInterval(timer);
     timer = null;
-    gameOverTime = gameTimer.textContent;
     gameTimer.textContent = 0;
-    console.log(gameOverTime);
 }
 
+//modal functions
 
 const hideModal = () =>  {
     completeModal.className = 'hide';
@@ -52,9 +57,11 @@ const hideModal = () =>  {
 
 const showModal = () => {
     completeModal.className = 'game-complete-modal';
+    closeModal.addEventListener('click', hideModal);
+    completeModal.addEventListener('click', hideModal);
+    playAgainBtn.addEventListener('click', resetGame);
 }
 
-completeModal.addEventListener('click', hideModal);
 
 const randomIconSelection = () => {
     let iconClasses = [
@@ -90,8 +97,10 @@ const starCheck = () => {
 
   } else if (moveCounter.textContent > 16 && moveCounter.textContent < 30) {
     thirdStar.className = 'hide';
+    thirdStarModal.className = 'hide';
     } else {
         secondStar.className = 'hide';
+        secondStarModal.className = 'hide';
     }
 }
 
@@ -134,6 +143,7 @@ const createCards = (cardIndex, randomIconList)=> {
             cardsRevealed = 0;
             showModal();
             stopTimer();
+            gameOverTimeSpan.innerHTML = gameOverTime;
         } else if (equalMatch) {
             currentCard.className = 'card-front reveal-front';
             otherCard.className = 'card-front reveal-front';
@@ -176,7 +186,7 @@ const createBoard = () => {
   }
 };
 
-playButton.addEventListener('click', function(){
+const playGame = function(){
     const wrapperChildren = document.querySelectorAll('.card-front');
     for (wrapperChild of wrapperChildren) {
         wrapperChild.remove();
@@ -184,6 +194,18 @@ playButton.addEventListener('click', function(){
     moveCounter.textContent = 0;
     createBoard();
     startTimer();
-    
+}
 
-})
+const resetGame = function(){
+        const wrapperChildren = document.querySelectorAll('.card-front');
+        for (wrapperChild of wrapperChildren) {
+            wrapperChild.remove();
+        }    
+        moveCounter.textContent = 0;
+        stopTimer();
+    }
+
+playButton.addEventListener('click', playGame);
+
+resetButton.addEventListener('click', resetGame);
+
