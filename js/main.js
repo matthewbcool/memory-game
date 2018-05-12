@@ -122,7 +122,7 @@ const createCards = (cardIndex, randomIconList)=> {
             cardsRevealed = 1;
             moveCounter.textContent++;
             starCheck();
-        } else if (cardsRevealed === 1) {
+        } else if (cardsRevealed === 1 && event.target.matches('.card')) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
             otherIconElement = otherIconElement.className;
