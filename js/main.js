@@ -96,7 +96,7 @@ const randomIconSelection = () => {
 const starCheck = () => {
   if (moveCounter.textContent <= 16) {
 
-  } else if (moveCounter.textContent > 16 && moveCounter.textContent < 30) {
+  } else if (moveCounter.textContent >= 16 && moveCounter.textContent < 30) {
     thirdStar.className = 'hide';
     thirdStarModal.className = 'hide';
     } else {
@@ -105,6 +105,12 @@ const starCheck = () => {
     }
 }
 
+const resetStars = () => {
+    thirdStar.className = 'fas fa-star';
+    secondStar.className = 'fas fa-star';
+    secondStarModal.className = 'fas fa-star';
+    thirdStarModal.className = 'fas fa-star';
+}
 
 const createCards = (cardIndex, randomIconList)=> {
 
@@ -116,14 +122,14 @@ const createCards = (cardIndex, randomIconList)=> {
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
         currentIconElement = currentIconElement.previousSibling.className;
-        if (otherCard === undefined && cardsRevealed === 0 && event.target.matches('.card')) {
+        if (otherCard === undefined && cardsRevealed === 0 && event.target.matches('div.card')) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
             cardFront.className = 'card-front reveal-front';
             cardsRevealed = 1;
             moveCounter.textContent++;
             starCheck();
-        } else if (cardsRevealed === 1 && event.target.matches('.card')) {
+        } else if (cardsRevealed === 1 && event.target.matches('div.card')) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
             otherIconElement = otherIconElement.className;
@@ -197,6 +203,7 @@ const playGame = function(){
         stopTimer();
     }
     createBoard();
+    resetStars();
     startTimer();
 }
 
@@ -207,6 +214,7 @@ const resetGame = function(){
         }    
         moveCounter.textContent = 0;
         stopTimer();
+        resetStars();
     }
 
 playButton.addEventListener('click', playGame);

@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a project for Udacity's front-end devoloper nanodegree. The project is currently hosted on GitHub Pages at https://matthewbcool.github.io/memory-game/
+This is a project for Udacity's front-end developer nanodegree. The project is currently hosted on GitHub Pages at https://matthewbcool.github.io/memory-game/
 
 
 ## Dependencies
