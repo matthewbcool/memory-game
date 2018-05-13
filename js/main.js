@@ -18,7 +18,6 @@ let otherIconElement;
 let cardsRevealed = 0;
 let timer;
 
-
 const isGameOver = () => {
     let count = 0;
     let wrapperChildren = document.querySelectorAll('.card-front');
@@ -56,6 +55,7 @@ const hideModal = () =>  {
     completeModal.className = 'hide';
 }
 
+//called on game won conditional
 const showModal = () => {
     completeModal.className = 'game-complete-modal';
     closeModal.addEventListener('click', hideModal);
@@ -93,6 +93,7 @@ const randomIconSelection = () => {
     return randomIconList;
 };
 
+//checks move counter against numbers of stars
 const starCheck = () => {
   if (moveCounter.textContent <= 16) {
 
@@ -104,7 +105,7 @@ const starCheck = () => {
         secondStarModal.className = 'hide';
     }
 }
-
+// removes the hide class by setting original classes to stars
 const resetStars = () => {
     thirdStar.className = 'fas fa-star';
     secondStar.className = 'fas fa-star';
@@ -122,6 +123,8 @@ const createCards = (cardIndex, randomIconList)=> {
         //get the icon the user has just revealed 
         let currentIconElement = event.target;
             currentIconElement = currentIconElement.previousSibling.className;
+
+        //First checks if the user has clicked another card and how many cards are already revealed.    
         if (otherCard === undefined && cardsRevealed === 0 && event.target.matches('div.card')) {
             otherCard = currentCard;
             otherIconElement = currentIconElement;
@@ -129,7 +132,6 @@ const createCards = (cardIndex, randomIconList)=> {
             cardsRevealed++;
             moveCounter.textContent++;
             starCheck();
-            console.log('Cards Revealed: ' + cardsRevealed);
         } else if (cardsRevealed === 1 && event.target.matches('div.card')) {
             otherIconElement = otherCard.childNodes;
             otherIconElement = otherIconElement[0];
@@ -140,12 +142,10 @@ const createCards = (cardIndex, randomIconList)=> {
             cardFront.className = 'card-front reveal-front';
             moveCounter.textContent++;
             starCheck();
-            console.log('Cards Revealed: ' + cardsRevealed);
         } else {
             console.log('this is a click with two cards already revealed');
-            console.log('Cards Revealed: ' + cardsRevealed);
         }
-
+        // Checks for game over condition or if the cards are a match. On match condition the class reveal-front is preserved.
         if (equalMatch && isGameOver()) {
             currentCard.className = 'card-front reveal-front';
             otherCard.className = 'card-front reveal-front';
@@ -159,9 +159,7 @@ const createCards = (cardIndex, randomIconList)=> {
             otherCard.className = 'card-front reveal-front';
             otherCard = undefined;
             currentCard;
-            setTimeout(function(){
-                cardsRevealed = 0;
-            }, 500);
+            cardsRevealed = 0;
         } else if (notEqualMatch) {
             let filpBackOverOne;
             let filpBackOverTwo;
@@ -184,8 +182,6 @@ const createCards = (cardIndex, randomIconList)=> {
     gameBoard.appendChild(cardFront);
     iconHtml.className = randomIconList[cardIndex];
     cardFront.appendChild(iconHtml);
-     //adds listener
-
     cardFront.addEventListener('click', respondToClick);
     //create card back
     const cardBack = document.createElement('div');
@@ -196,7 +192,7 @@ const createCards = (cardIndex, randomIconList)=> {
     currentCardFront.appendChild(cardBack);
 }
 
-
+// loops through 12 times to create 12 cards
 const createBoard = () => {
   let randomIconList = randomIconSelection();
   for (let cardIndex = 0; cardIndex < 12; cardIndex++) {
@@ -204,12 +200,18 @@ const createBoard = () => {
   }
 };
 
-const playGame = function(){
+//removes cards and resets moveCounter
+const clearBoard = () => {
     const wrapperChildren = document.querySelectorAll('.card-front');
     for (wrapperChild of wrapperChildren) {
         wrapperChild.remove();
     }    
     moveCounter.textContent = 0;
+}
+
+// first loops through all the cards and removes any exisiting ones, then creates new board.
+const playGame = function(){
+    clearBoard()
     if (timer !== undefined) {
         stopTimer();
     }
@@ -218,12 +220,9 @@ const playGame = function(){
     startTimer();
 }
 
+//clears board but does not create a new board.
 const resetGame = function(){
-        const wrapperChildren = document.querySelectorAll('.card-front');
-        for (wrapperChild of wrapperChildren) {
-            wrapperChild.remove();
-        }    
-        moveCounter.textContent = 0;
+        clearBoard();
         stopTimer();
         resetStars();
     }
